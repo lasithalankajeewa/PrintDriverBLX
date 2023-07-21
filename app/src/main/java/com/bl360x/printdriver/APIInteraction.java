@@ -21,13 +21,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class APIInteraction{
-    public PrintDetails GetImages(String url,String companyKey,String orderId, String transactionTypeKey) throws MalformedURLException, IOException, JSONException {
+    public PrintDetails GetImages(String url,String companyKey,String orderId, String transactionTypeKey,String token) throws MalformedURLException, IOException, JSONException {
         URL urls = new URL(url);
         HttpURLConnection connection = (HttpURLConnection)urls.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type","application/json");
         connection.setRequestProperty("Accept","application/json");
-        connection.setRequestProperty("IntegrationID","1aa6a39b-5f54-4905-880a-a52733fd6105");
+        connection.setRequestProperty("Authorization","Bearer " + token);
+        connection.setRequestProperty("IntegrationID","7ee53650-37b8-464c-90e9-85d89f8ab12a");
         connection.setDoInput(true);
         connection.setDoInput(true);
 
