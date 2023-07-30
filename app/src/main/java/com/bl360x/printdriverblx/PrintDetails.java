@@ -1,6 +1,5 @@
-package com.bl360x.printdriver;
+package com.bl360x.printdriverblx;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PrintDetails {

@@ -1,4 +1,4 @@
-package com.bl360x.printdriver;
+package com.bl360x.printdriverblx;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,11 +13,10 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.bxl.config.editor.BXLConfigLoader;
-import jpos.config.JposEntry;
+
 import jpos.POSPrinter;
 import jpos.POSPrinterConst;
 
@@ -106,10 +105,12 @@ public class BIXOLONWorker extends Worker {
         buffer.put((byte) 0);
         buffer.put((byte) 0x01);
         buffer.put((byte) 0x01);
+
         for(String image : images){
             byte[] byteBee = Base64.decode(image,Base64.DEFAULT);
             Bitmap bmp = BitmapFactory.decodeByteArray(byteBee,0,byteBee.length);
-            posPrinter.printBitmap(buffer.getInt(0),bmp,600,POSPrinterConst.PTR_BM_LEFT);
+            posPrinter.printBitmap(buffer.getInt(0),bmp,800,POSPrinterConst.PTR_BM_LEFT);
+
         }
     }
 }

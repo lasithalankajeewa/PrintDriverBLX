@@ -1,4 +1,4 @@
-package com.bl360x.printdriver;
+package com.bl360x.printdriverblx;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -230,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveSelectedModel(){
+
         if(brandName == "BIXOLON"){
             String data = (String)modelSpinner.getSelectedItem();
             sharedPreferencesEditor.putString("PREF_BX_MODEL",data);

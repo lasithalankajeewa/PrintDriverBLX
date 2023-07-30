@@ -1,6 +1,5 @@
-package com.bl360x.printdriver;
+package com.bl360x.printdriverblx;
 
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
@@ -22,8 +19,6 @@ import com.epson.epos2.printer.ReceiveListener;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 public class EPSONPrintReceiver extends BroadcastReceiver implements ReceiveListener {
 

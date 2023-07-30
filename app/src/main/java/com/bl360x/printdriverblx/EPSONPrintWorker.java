@@ -1,4 +1,4 @@
-package com.bl360x.printdriver;
+package com.bl360x.printdriverblx;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,14 +15,6 @@ import com.epson.epos2.printer.Printer;
 import com.epson.epos2.printer.PrinterStatusInfo;
 import com.epson.epos2.printer.ReceiveListener;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EPSONPrintWorker extends Worker implements ReceiveListener {

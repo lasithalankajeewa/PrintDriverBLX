@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bl 360 ERP Support</string>
+    <string name="app_name">Bl X Support</string>
     <string name="channel_name">BL360_NF_channel</string>
     <string name="channel_id">bl360xnfchnl</string>
     <string name="status_message">you can see notification when your printing \nservice started!</string>

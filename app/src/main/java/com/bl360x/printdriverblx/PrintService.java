@@ -1,4 +1,4 @@
-package com.bl360x.printdriver;
+package com.bl360x.printdriverblx;
 
 import android.app.Notification;
 import android.app.PendingIntent;

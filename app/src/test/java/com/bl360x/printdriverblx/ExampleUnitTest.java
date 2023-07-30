@@ -1,4 +1,4 @@
-package com.bl360x.printdriver;
+package com.bl360x.printdriverblx;
 
 import org.junit.Test;
 

@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.bl360x.printdriver'
+    namespace 'com.bl360x.printdriverblx'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.bl360x.printdriver"
+        applicationId "com.bl360x.printdriverblx"
         minSdk 26
         targetSdk 33
         versionCode 4

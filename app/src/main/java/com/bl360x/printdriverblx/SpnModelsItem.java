@@ -1,4 +1,4 @@
-package com.bl360x.printdriver;
+package com.bl360x.printdriverblx;
 
 public class SpnModelsItem {
     private String mModelName = "";
