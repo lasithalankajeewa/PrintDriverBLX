@@ -80,23 +80,7 @@ public class EPSONPrintWorker extends Worker implements ReceiveListener {
             return Result.success();
         }catch (Exception ex){
             return Result.failure();
-        }
-    }
-
-    private boolean implementPrint(){
-        if(mPrinter == null){
-            return false;
-        }
-//        if(!connectPrinter()){
-//            mPrinter.clearCommandBuffer();
-//            return false;
-//        }
-
-        try {
-            mPrinter.sendData(Printer.PARAM_DEFAULT);
-        }
-        catch (Exception e) {
-            //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }finally{
             mPrinter.clearCommandBuffer();
             try {
                 mPrinter.disconnect();
@@ -104,6 +88,18 @@ public class EPSONPrintWorker extends Worker implements ReceiveListener {
             catch (Exception ex) {
                 // Do nothing
             }
+        }
+    }
+
+    private boolean implementPrint(){
+        if(mPrinter == null){
+            return false;
+        }
+        try {
+            mPrinter.sendData(Printer.PARAM_DEFAULT);
+        }
+        catch (Exception e) {
+            //Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

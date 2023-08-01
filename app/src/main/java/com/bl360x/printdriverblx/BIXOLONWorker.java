@@ -109,7 +109,7 @@ public class BIXOLONWorker extends Worker {
         for(String image : images){
             byte[] byteBee = Base64.decode(image,Base64.DEFAULT);
             Bitmap bmp = BitmapFactory.decodeByteArray(byteBee,0,byteBee.length);
-            posPrinter.printBitmap(buffer.getInt(0),bmp,800,POSPrinterConst.PTR_BM_LEFT);
+            posPrinter.printBitmap(buffer.getInt(0),bmp,1200,POSPrinterConst.PTR_BM_LEFT);
 
         }
     }

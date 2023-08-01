@@ -2,7 +2,9 @@ package com.bl360x.printdriverblx;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -27,7 +29,10 @@ import com.bxl.config.editor.BXLConfigLoader;
 import com.epson.epos2.printer.Printer;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btn;
+
+    private Button btn,stpBtn;
+
+    private int REQUEST_CODE = 1001;
     private Spinner modelSpinner,brandSpinner;
 
     private TextView tv6;
@@ -68,13 +73,22 @@ public class MainActivity extends AppCompatActivity {
         String prevMac = sharedPreferences.getString(getString(R.string.pref_btmac),"");
         btMacText.setText(prevMac);
 
+        String prevBrand = sharedPreferences.getString(getString(R.string.pref_brand),"");
+
         ArrayAdapter<String> brandAdapter =new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         brandAdapter.add("EPSON");
         brandAdapter.add("BIXOLON");
         brandAdapter.add("Not In List");
         brandSpinner.setAdapter(brandAdapter);
-        brandSpinner.setSelection(1);
+        if(prevBrand.equals("EPSON")){
+            brandSpinner.setSelection(0);
+        }else if(prevBrand.equals("BIXOLON")){
+            brandSpinner.setSelection(1);
+        }else{
+            brandSpinner.setSelection(2);
+        }
         brandSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -96,6 +110,19 @@ public class MainActivity extends AppCompatActivity {
                 startServiceNow();
             }
         });
+
+
+        stpBtn = findViewById(R.id.stp_srvce);
+        stpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StopServiceNow();
+            }
+        });
+    }
+    private void StopServiceNow(){
+        Intent intent = new Intent(getApplicationContext(), PrintService.class);
+        stopService(intent);
     }
 
     private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(),isGranted->{
@@ -107,33 +134,78 @@ public class MainActivity extends AppCompatActivity {
     });
 
     private void RequestPermissions(){
+        String[] permissionList;
+
         if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.P){
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION);
+//            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+//                requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION);
+//            }
+            permissionList = new  String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.FOREGROUND_SERVICE,
+                    Manifest.permission.POST_NOTIFICATIONS,
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT
+            };
+        }else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.R){
+//            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+//                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+//            }
+//            if(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED){
+//                requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH);
+//            }
+//            if(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED){
+//                requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_ADMIN);
+//            }
+            permissionList = new  String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADMIN,
+                    Manifest.permission.FOREGROUND_SERVICE,
+                    Manifest.permission.POST_NOTIFICATIONS,
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT
+            };
+        }else{
+            permissionList = new  String[]{
+                    Manifest.permission.FOREGROUND_SERVICE,
+                    Manifest.permission.POST_NOTIFICATIONS,
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT
+            };
+        }
+//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED){
+//            requestPermissionLauncher.launch(Manifest.permission.FOREGROUND_SERVICE);
+//        }
+//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+//            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+//        }
+//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED){
+//            requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_SCAN);
+//        }
+//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED){
+//            requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT);
+//        }
+
+
+
+        //int REQUEST_CODE = 1001;
+
+        ActivityCompat.requestPermissions(this,permissionList,REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted
+                } else {
+                    // Permission denied
+                    //RequestPermissions();
+                }
             }
-        }
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.R){
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED){
-                requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH);
-            }
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED){
-                requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_ADMIN);
-            }
-        }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED){
-            requestPermissionLauncher.launch(Manifest.permission.FOREGROUND_SERVICE);
-        }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
-            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-        }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED){
-            requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_SCAN);
-        }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED){
-            requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT);
         }
     }
 
@@ -190,7 +262,13 @@ public class MainActivity extends AppCompatActivity {
             seriesAdapter.add(new SpnModelsItem(getString(R.string.printerseries_m50ii), Printer.TM_M50II));
             seriesAdapter.add(new SpnModelsItem(getString(R.string.printerseries_m55), Printer.TM_M55));
             modelSpinner.setAdapter(seriesAdapter);
-            modelSpinner.setSelection(1);
+            for(int i = 0; i < seriesAdapter.getCount(); i++){
+                SpnModelsItem item = seriesAdapter.getItem(i);
+                int valconst = item.getModelConstant();
+                if(prevModel == valconst){
+                    modelSpinner.setSelection(i);
+                }
+            }
             modelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
