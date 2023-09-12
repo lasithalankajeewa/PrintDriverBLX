@@ -41,7 +41,7 @@ public class EPSONPrintReceiver extends BroadcastReceiver {
         String transactionTypeKey = extras.getString("transactionTypeKey");
         String token = extras.getString("token");
         //List<KeyValuePair> parameters = extras.getParcelableArrayList("Parameters");
-        Data data = new Data.Builder().putString("companyKey",companyKey).putString("companyKey",orderId).putString("transactionTypeKey",transactionTypeKey).putString("token",token).build();
+        Data data = new Data.Builder().putString("companyKey",companyKey).putString("orderId",orderId).putString("transactionTypeKey",transactionTypeKey).putString("token",token).build();
         WorkRequest printRequest = new OneTimeWorkRequest.Builder(EPSONPrintWorker.class).setInputData(data).build();
         WorkManager.getInstance(context).enqueue(printRequest);
 
