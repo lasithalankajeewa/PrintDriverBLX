@@ -50,7 +50,7 @@ public class EPSONPrintWorker extends Worker implements ReceiveListener {
             byte[] byteBee = Base64.decode(image,Base64.DEFAULT);
 
             Bitmap bmp = BitmapFactory.decodeByteArray(byteBee,0,byteBee.length);
-            Bitmap bmp2 = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth() *2),(int)(bmp.getHeight()*1.5),false);
+            Bitmap bmp2 = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth() *1),(int)(bmp.getHeight()*1),false);
             mPrinter.addImage(bmp2,0,0,bmp2.getWidth(),bmp2.getHeight(),Printer.PARAM_DEFAULT,Printer.MODE_MONO,Printer.HALFTONE_THRESHOLD,Printer.PARAM_DEFAULT,Printer.PARAM_DEFAULT);
         }
         //Bitmap bmp = BitmapFactory.decodeByteArray(byteBee,0,byteBee.length);
