@@ -28,9 +28,17 @@ public class BIXOLONReceiver extends BroadcastReceiver {
         String orderId = extras.getString("orderId");
         String transactionTypeKey = extras.getString("transactionTypeKey");
         String token = extras.getString("token");
-        //List<KeyValuePair> parameters = extras.getParcelableArrayList("parameters");
-        Data data = new Data.Builder().putString("companyKey",companyKey).putString("orderId",orderId).putString("transactionTypeKey",transactionTypeKey).putString("token",token).build();
+
+        //List<KeyValuePair> parameters = extras.getParcelableArrayList("Parameters");
+        String url = extras.getString("URL");
+        boolean isReport = extras.getBoolean("IsReport");
+        String parameters = extras.getString("Parameters");
+        Data data = new Data.Builder().putString("companyKey",companyKey).putString("orderId",orderId).putString("URL",url).putString("transactionTypeKey",transactionTypeKey).putString("Parameters",parameters).putBoolean("IsReport",isReport).putString("URL",url).putString("token",token).build();
+        //Data data = new Data.Builder().putString("URL",url).putString("report",report).putString("parameters",parameters).putString("token",token).build();
+
         WorkRequest printRequest = new OneTimeWorkRequest.Builder(BIXOLONWorker.class).setInputData(data).build();
         WorkManager.getInstance(context).enqueue(printRequest);
+
+
     }
 }

@@ -46,16 +46,15 @@ public class BIXOLONWorker extends Worker {
     @Override
     public Result doWork() {
         Data data = getInputData();
-        url = url = "https://bluelotusx.co/apiv2/api/Order/PrintOrderByOrderIdImage";;
-        /*report = data.getString("report");
-        parameters = data.getString("parameters");*/
+        //url = "https://bluelotusx.co/apiv2/api/Order/PrintOrderByOrderIdImage";
+        //report = data.getString("Report");
+        url = data.getString("URL");
         companyKey = data.getString("companyKey");
         orderId = data.getString("orderId");
         transactionTypeKey = data.getString("transactionTypeKey");
         token=data.getString("token");
         parameters=data.getString("Parameters");
         isReport=data.getBoolean("IsReport",false);
-        //List<KeyValuePair> parameters = new ArrayList<>();
         try{
             PrintDetails pds = apiInteraction.GetImages(url,companyKey,orderId,transactionTypeKey,token,parameters,isReport);
 
