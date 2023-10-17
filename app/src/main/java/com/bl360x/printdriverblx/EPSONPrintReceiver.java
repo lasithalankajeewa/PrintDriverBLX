@@ -45,7 +45,7 @@ public class EPSONPrintReceiver extends BroadcastReceiver {
         String url = extras.getString("URL");
         boolean isReport = extras.getBoolean("IsReport");
         String parameters = extras.getString("Parameters");
-        Data data = new Data.Builder().putString("companyKey",companyKey).putString("orderId",orderId).putString("transactionTypeKey",transactionTypeKey).putString("Parameters",parameters).putString("token",token).build();
+        Data data = new Data.Builder().putString("companyKey",companyKey).putString("orderId",orderId).putString("URL",url).putString("transactionTypeKey",transactionTypeKey).putString("Parameters",parameters).putBoolean("IsReport",isReport).putString("URL",url).putString("token",token).build();
         //Data data = new Data.Builder().putString("URL",url).putString("report",report).putString("parameters",parameters).putString("token",token).build();
 
         WorkRequest printRequest = new OneTimeWorkRequest.Builder(EPSONPrintWorker.class).setInputData(data).build();

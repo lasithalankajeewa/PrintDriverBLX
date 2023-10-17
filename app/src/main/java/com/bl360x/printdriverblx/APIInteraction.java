@@ -1,5 +1,6 @@
 package com.bl360x.printdriverblx;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,9 +15,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 public class APIInteraction{
-    public PrintDetails GetImages(String url,String companyKey,String orderId, String transactionTypeKey,String token) throws MalformedURLException, IOException, JSONException {
+    public PrintDetails GetImages(String url,String companyKey,String orderId, String transactionTypeKey,String token,String parameters,boolean isRreport) throws MalformedURLException, IOException, JSONException {
         URL urls = new URL(url);
         HttpURLConnection connection = (HttpURLConnection)urls.openConnection();
         connection.setRequestMethod("POST");
@@ -27,23 +30,26 @@ public class APIInteraction{
         connection.setDoInput(true);
         connection.setDoInput(true);
 
+
         JSONObject jobj = new JSONObject();
-        jobj.put("companyKey",companyKey);
-        jobj.put("OrderId",orderId);
-        jobj.put("transactionTypeKey",transactionTypeKey);
 
-        //JSONArray array = new JSONArray();
+        if(isRreport){
 
-        /*if(parameters != null){
-            String[] paramdivided = parameters.split(";");
-            for (String pm : paramdivided){
-                String[] pmd = pm.split(":");
-                JSONObject obj1 = new JSONObject();
-                obj1.put("param",pmd[0]);
-                obj1.put("paramContent",pmd[1]);
-                array.put(obj1);
+
+            try {
+                jobj=new JSONObject(parameters);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }*/
+
+        }else{
+
+            jobj.put("companyKey",companyKey);
+            jobj.put("OrderId",orderId);
+            jobj.put("transactionTypeKey",transactionTypeKey);
+        }
+
         //JSONObject obj1 = new JSONObject();
 //        for(KeyValuePair kvp : contents){
 //            JSONObject obj1 = new JSONObject();
@@ -77,7 +83,10 @@ public class APIInteraction{
         InputStream inputStream;
         if(connection.getResponseCode() == 200){
             inputStream = connection.getInputStream();
-        }else return new PrintDetails();
+        }else {
+            System.out.println(connection.getResponseCode());
+            return new PrintDetails();
+        }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
         int bytesRead;

@@ -23,6 +23,8 @@ import jpos.POSPrinterConst;
 public class BIXOLONWorker extends Worker {
     private String bluetoothMac = "",url = "",report = "",parameters = "";
 
+    private boolean isReport=false;
+
     private String companyKey = "",orderId = "",transactionTypeKey = "",token="";
     private String printerModel = "";
     private APIInteraction apiInteraction;
@@ -51,9 +53,11 @@ public class BIXOLONWorker extends Worker {
         orderId = data.getString("orderId");
         transactionTypeKey = data.getString("transactionTypeKey");
         token=data.getString("token");
+        parameters=data.getString("Parameters");
+        isReport=data.getBoolean("IsReport",false);
         //List<KeyValuePair> parameters = new ArrayList<>();
         try{
-            PrintDetails pds = apiInteraction.GetImages(url,companyKey,orderId,transactionTypeKey,token);
+            PrintDetails pds = apiInteraction.GetImages(url,companyKey,orderId,transactionTypeKey,token,parameters,isReport);
 
             //Data datad = new Data.Builder().putStringArray("datas",pds.getImageList().toArray(new String[0])).build();
             //return Result.success(datad);
